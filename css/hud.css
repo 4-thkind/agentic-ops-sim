@@ -1,0 +1,175 @@
+/* ── Progress ── */
+.hud-progress {
+  position: fixed;
+  top: var(--sp-lg); left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  width: min(460px, 78vw);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-sm);
+}
+.progress-track {
+  width: 100%;
+  height: 2px;
+  background: var(--hairline);
+  border-radius: var(--r-full);
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--primary);
+  border-radius: var(--r-full);
+  transition: width var(--t-crawl) var(--ease-out);
+}
+.progress-dots { display: flex; gap: var(--sp-sm); }
+.progress-dots .pdot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--hairline);
+  padding: 0;
+  border: none;
+  transition: background var(--t-med), transform var(--t-med);
+}
+.progress-dots .pdot:hover   { background: var(--border-strong); }
+.progress-dots .pdot.visited { background: var(--muted-soft); }
+.progress-dots .pdot.active  {
+  background: var(--primary);
+  transform: scale(1.4);
+}
+
+/* ── Speaker bar ── */
+.hud-speaker {
+  position: fixed;
+  bottom: var(--sp-lg); left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-full);
+  box-shadow: var(--shadow);
+  padding: var(--sp-sm) var(--sp-lg) var(--sp-sm) var(--sp-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-md);
+  min-width: 300px;
+  transition: opacity var(--t-med), transform var(--t-med);
+}
+.hud-speaker.hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(12px);
+  pointer-events: none;
+}
+
+/* Initials disc — replaces the avatar image slot */
+.speaker-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--surface-strong);
+  border: 1px solid var(--hairline);
+  color: var(--ink);
+  display: grid; place-items: center;
+  font: var(--badge);
+  letter-spacing: 0.04em;
+  flex: none;
+}
+
+.speaker-meta { display: flex; flex-direction: column; }
+.speaker-name { font: var(--caption); color: var(--ink); }
+.speaker-role { font: var(--caption-sm); color: var(--muted); }
+
+.speaker-wave {
+  display: flex; gap: 2px;
+  align-items: center;
+  height: 18px;
+  margin-left: auto;
+}
+.speaker-wave i {
+  width: 2px;
+  height: 3px;
+  background: var(--primary);
+  border-radius: var(--r-full);
+  animation: wbar 0.7s ease-in-out infinite;
+}
+.speaker-wave i:nth-child(2) { animation-delay: 0.1s; }
+.speaker-wave i:nth-child(3) { animation-delay: 0.2s; }
+.speaker-wave i:nth-child(4) { animation-delay: 0.3s; }
+.speaker-wave i:nth-child(5) { animation-delay: 0.4s; }
+@keyframes wbar {
+  0%, 100% { height: 3px; }
+  50%      { height: 16px; }
+}
+.speaker-wave.idle i { animation: none; height: 3px; opacity: 0.4; }
+
+/* ── Controls — circular icon buttons ── */
+.hud-controls {
+  position: fixed;
+  bottom: var(--sp-xl); right: var(--sp-lg);
+  z-index: 20;
+  display: flex;
+  gap: var(--sp-sm);
+}
+.ctrl-btn {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--hairline);
+  background: var(--surface-card);
+  color: var(--ink);
+  display: grid; place-items: center;
+  transition: border-color var(--t-fast), background var(--t-fast);
+}
+.ctrl-btn:hover:not(:disabled) { border-color: var(--border-strong); }
+.ctrl-btn:disabled { opacity: 0.3; cursor: default; }
+.ctrl-btn.primary {
+  background: var(--primary);
+  color: var(--on-primary);
+  border-color: var(--primary);
+}
+.ctrl-btn.primary:hover:not(:disabled) { background: var(--primary-active); }
+
+/* ── Voice toggle ── */
+.hud-voice {
+  position: fixed;
+  top: var(--sp-lg); right: var(--sp-lg);
+  z-index: 20;
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-full);
+  padding: var(--sp-sm) var(--sp-base);
+  display: flex; align-items: center; gap: var(--sp-sm);
+  font: var(--button-sm);
+  color: var(--ink);
+  transition: border-color var(--t-fast);
+}
+.hud-voice:hover { border-color: var(--border-strong); }
+.voice-icon { display: grid; place-items: center; color: var(--primary); }
+.hud-voice.off .voice-icon { color: var(--muted); }
+
+/* Neural / fallback engine indicator */
+.voice-engine {
+  font: var(--badge);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted-soft);
+  padding-left: var(--sp-sm);
+  border-left: 1px solid var(--hairline);
+}
+.voice-engine.neural { color: var(--positive); }
+
+/* ── Counter ── */
+.hud-counter {
+  position: fixed;
+  top: var(--sp-lg); left: var(--sp-lg);
+  z-index: 20;
+  font: var(--caption-sm);
+  font-family: var(--mono);
+  color: var(--muted);
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-full);
+  padding: var(--sp-sm) var(--sp-base);
+}
+.hud-counter #counterCurrent { color: var(--ink); font-weight: 600; }
+.counter-sep { color: var(--muted-soft); margin: 0 2px; }

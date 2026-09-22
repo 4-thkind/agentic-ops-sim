@@ -1,0 +1,290 @@
+/* ── Cards ──
+   Airbnb card structure: {r-md} corner clipping, 24px internal padding,
+   one shadow tier, hairline border. No glow, no gradient chrome. */
+.card {
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow);
+  padding: clamp(var(--sp-lg), 4vw, var(--sp-xl));
+  max-width: 680px;
+  width: 100%;
+  margin-bottom: 150px;
+  position: relative;
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.6s var(--ease-out) 0.45s,
+    transform 0.6s var(--ease-out) 0.45s;
+}
+.zone.active .card {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Header: index + section tag ── */
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-md);
+  margin-bottom: var(--sp-base);
+}
+.card-num {
+  font: var(--micro);
+  font-family: var(--mono);
+  color: var(--primary);
+  background: var(--primary-soft);
+  border-radius: var(--r-full);
+  padding: 3px 10px;
+}
+.card-tag {
+  font: var(--caption-sm);
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Display weights stay modest — the system trusts structure over type size */
+.card-title {
+  font: var(--display-xl);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--ink);
+  margin-bottom: var(--sp-md);
+}
+
+.card p {
+  font: var(--body-md);
+  color: var(--body);
+  margin-bottom: var(--sp-sm);
+  max-width: 62ch;
+}
+.card p:last-child { margin-bottom: 0; }
+.card strong { color: var(--ink); font-weight: 600; }
+
+/* ── Insight block — the AI agent read on each failure ── */
+.card-insight {
+  background: var(--primary-soft);
+  border: 1px solid var(--primary-line);
+  border-radius: var(--r-sm);
+  padding: var(--sp-base) var(--sp-lg);
+  margin-top: var(--sp-base);
+}
+.insight-header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  margin-bottom: var(--sp-xs);
+  color: var(--primary);
+}
+.insight-icon { display: grid; place-items: center; }
+.insight-icon svg { display: block; }
+.insight-label {
+  font: var(--badge);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.card-insight p {
+  font: var(--body-sm);
+  color: var(--body);
+  margin: 0;
+}
+
+/* ── Stat row ── */
+.card-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-md);
+  margin-top: var(--sp-lg);
+  padding-top: var(--sp-lg);
+  border-top: 1px solid var(--hairline-soft);
+}
+.stat { display: flex; flex-direction: column; gap: var(--sp-xxs); }
+.stat-val {
+  font: var(--display-md);
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.stat-label {
+  font: var(--caption-sm);
+  color: var(--muted);
+}
+
+/* ── With / without comparison ── */
+.card-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-md);
+  margin-top: var(--sp-base);
+}
+.compare-col {
+  border-radius: var(--r-sm);
+  padding: var(--sp-base);
+  border: 1px solid var(--hairline);
+}
+.compare-col.bad  { background: var(--negative-soft); border-color: rgba(255, 122, 112, 0.2); }
+.compare-col.good { background: var(--positive-soft); border-color: rgba(78, 203, 146, 0.2); }
+.compare-label {
+  font: var(--badge);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: var(--sp-sm);
+}
+.compare-col.bad  .compare-label { color: var(--negative); }
+.compare-col.good .compare-label { color: var(--positive); }
+.compare-col p {
+  font: var(--body-sm);
+  color: var(--body);
+  margin: 0;
+}
+
+/* ── Headline statistic ──
+   The one loud typographic moment per card, mirroring the source system's
+   rating display: type alone carries the hierarchy here. */
+.card-big-stat {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-base);
+  margin: var(--sp-lg) 0;
+  padding: var(--sp-lg) 0;
+  border-top: 1px solid var(--hairline-soft);
+  border-bottom: 1px solid var(--hairline-soft);
+}
+.big-num {
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -1px;
+  color: var(--primary);
+  flex: none;
+}
+.big-context {
+  font: var(--body-sm);
+  color: var(--muted);
+  max-width: 28ch;
+}
+
+/* ── Quote ── */
+.card-quote {
+  margin: var(--sp-base) 0;
+  padding: var(--sp-base) var(--sp-lg);
+  border-left: 2px solid var(--primary);
+  background: var(--surface-soft);
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  font: var(--body-md);
+  font-style: italic;
+  color: var(--ink);
+}
+
+/* ── Gauge: actual against target ── */
+.card-gauge { margin: var(--sp-lg) 0; }
+.gauge-track {
+  position: relative;
+  height: 8px;
+  background: var(--surface-strong);
+  border-radius: var(--r-full);
+  overflow: hidden;
+}
+.gauge-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--pct) * 1%);
+  background: var(--primary);
+  border-radius: var(--r-full);
+}
+.gauge-target {
+  position: absolute;
+  top: -3px; bottom: -3px;
+  left: calc(var(--pct) * 1%);
+  width: 2px;
+  background: var(--ink);
+}
+.gauge-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--sp-sm);
+  font: var(--caption-sm);
+}
+.gauge-actual { color: var(--primary); font-weight: 600; }
+.gauge-goal   { color: var(--muted); }
+
+/* ── Budget choices ── */
+.card-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-sm);
+  margin: var(--sp-base) 0;
+}
+.choice {
+  font: var(--button-sm);
+  color: var(--body);
+  background: var(--surface-soft);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-full);
+  padding: var(--sp-sm) var(--sp-base);
+}
+
+/* ── Week timeline ── */
+.card-timeline {
+  display: flex;
+  flex-direction: column;
+  margin: var(--sp-base) 0;
+}
+.tl-item {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-md);
+  padding: var(--sp-md) 0;
+  border-bottom: 1px solid var(--hairline-soft);
+  font: var(--body-sm);
+  color: var(--body);
+}
+.tl-item:last-child { border-bottom: none; }
+.tl-day {
+  font: var(--micro);
+  font-family: var(--mono);
+  color: var(--muted);
+  width: 34px;
+  flex: none;
+}
+.tl-item.urgent   .tl-day { color: var(--ink); }
+.tl-item.critical .tl-day { color: var(--primary); }
+.tl-item.critical { color: var(--ink); font-weight: 500; }
+
+/* ── Agent stack ── */
+.card-stack {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-sm);
+  margin: var(--sp-base) 0;
+}
+.stack-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  padding: var(--sp-md) var(--sp-base);
+  background: var(--surface-soft);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-sm);
+  font: var(--body-sm);
+  color: var(--ink);
+}
+.stack-icon {
+  display: grid;
+  place-items: center;
+  color: var(--primary);
+  flex: none;
+}
+
+/* ── Closing line ── */
+.card-cta-line {
+  margin-top: var(--sp-lg);
+  padding: var(--sp-lg);
+  text-align: center;
+  font: var(--title-md);
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--primary-soft);
+  border: 1px solid var(--primary-line);
+  border-radius: var(--r-sm);
+}
