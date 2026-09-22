@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Crisis to Command — AI Operations Journey</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23ff385c'/><path d='M12 7h8v5h-8zM9 14h14v11H9z' fill='%23fff'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/intro.css">
+  <link rel="stylesheet" href="css/world.css">
+  <link rel="stylesheet" href="css/cards.css">
+  <link rel="stylesheet" href="css/character.css">
+  <link rel="stylesheet" href="css/hud.css">
+  <link rel="stylesheet" href="css/particles.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- ═══ LOADING SCREEN ═══ -->
+  <div class="loader" id="loader">
+    <div class="loader-ring"></div>
+    <p class="loader-text">Initializing simulation…</p>
+  </div>
+
+  <!-- ═══ INTRO SCREEN ═══ -->
+  <section class="intro" id="intro">
+    <div class="intro-bg">
+      <canvas id="introCanvas"></canvas>
+    </div>
+    <div class="intro-content">
+      <div class="intro-badge">Interactive Simulation</div>
+      <h1 class="intro-title">
+        From <em>Crisis</em><br>to Command
+      </h1>
+      <p class="intro-sub">
+        Walk through the collapse of a $4.5 billion industrial company — 
+        and discover how AI agents could have rewritten every chapter.
+      </p>
+      <div class="intro-features">
+        <div class="intro-feat">
+          <span class="feat-icon"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M8 6v6"/><path d="M16 6v6"/><path d="M4 9v2"/><path d="M20 9v2"/></svg></span>
+          <span>8 distinct executive voices narrate each stage</span>
+        </div>
+        <div class="intro-feat">
+          <span class="feat-icon"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 8V4"/><circle cx="9" cy="14" r="1"/><circle cx="15" cy="14" r="1"/></svg></span>
+          <span>See the AI agent solution at every failure point</span>
+        </div>
+        <div class="intro-feat">
+          <span class="feat-icon"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3l14 9-6 1.5L10 20z"/></svg></span>
+          <span>Interactive — navigate at your own pace</span>
+        </div>
+      </div>
+      <button class="intro-cta" id="startBtn">
+        <span class="cta-text">Launch the Journey</span>
+        <span class="cta-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13"/><path d="M13 6l6 6-6 6"/></svg></span>
+      </button>
+      <p class="intro-note">Best with sound on &middot; 8 minutes &middot; Arrow keys, swipe or tap to navigate</p>
+    </div>
+  </section>
+
+  <!-- ═══ MAIN SIMULATION ═══ -->
+  <main class="sim" id="sim" aria-hidden="true">
+
+    <!-- Sky + particles -->
+    <div class="sky" id="sky"></div>
+    <canvas class="particle-canvas" id="particleCanvas"></canvas>
+
+    <!-- Scrolling world container -->
+    <div class="world" id="world">
+
+      <!-- Ground plane -->
+      <div class="ground" id="ground">
+        <div class="ground-glow"></div>
+      </div>
+
+      <!-- City skyline (generated via JS) -->
+      <div class="skyline" id="skyline"></div>
+
+      <!-- ═══ ZONE 0: The Crisis ═══ -->
+      <section class="zone" data-zone="0">
+        <div class="zone-marker">
+          <div class="marker-pulse"></div>
+          <div class="marker-dot"></div>
+        </div>
+        <article class="card">
+          <header class="card-head">
+            <span class="card-num">01</span>
+            <span class="card-tag">the crisis</span>
+          </header>
+          <h2 class="card-title">A company in freefall</h2>
+          <p>Nova Industrial Systems. $4.5 billion in revenue. 15,000 people across three continents. <strong>And it's coming apart at the seams.</strong></p>
+          <p>Revenue is 8% below plan. A top customer threatens to walk in 30 days. Operations leaders are leaving. The executive team can't agree on what's wrong.</p>
+          <div class="card-insight">
+            <div class="insight-header">
+              <span class="insight-icon"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 8V4"/><circle cx="9" cy="14" r="1"/><circle cx="15" cy="14" r="1"/></svg></span>
+              <span class="insight-label">The AI Agent Perspective</span>
+            </div>
+            <p>What if AI agents were monitoring every signal — supply delays, customer sentiment, employee attrition — and connecting the dots before any human saw the pattern?</p>
+          </div>
+          <div class="card-stats">
+            <div class="stat">
+              <span class="stat-val">-8%</span>
+              <span class="stat-label">Revenue vs Plan</span>
+            </div>
+            <div class="stat">
+              <span class="stat-val">30</span>
+              <span class="stat-label">Days to save the customer</span>
+            </div>
+            <div class="stat">
+              <span class="stat-val">5</span>
+              <span class="stat-label">Conflicting explanations</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- ═══ ZONE 1: Diagnosis ═══ -->
+      <section class="zone" data-zone="1">
+        <div class="zone-marker"><div class="marker-pulse"></div><div class="marker-dot"></div></div>
+        <article class="card">
+          <header class="card-head">
+            <span class="card-num">02</span>
+            <span class="card-tag">diagnosis failure</span>
+          </header>
+          <h2 class="card-title">Everyone has a theory. Nobody has the truth.</h2>
+          <p>The CFO says cut costs. Commercial says spend on customers. Operations blames the supplier. HR says burnout. <strong>Five executives, five explanations, zero alignment.</strong></p>
+          <div class="card-compare">
+            <div class="compare-col bad">
+              <div class="compare-label">Without AI</div>
+              <p>It took two weeks of meetings to discover that a cost programme 18 months ago removed 30% of maintenance planners — and nobody connected it to the 41% rise in downtime.</p>
+            </div>
+            <div class="compare-col good">
+              <div class="compare-label">With AI Agents</div>
+              <p>An operations intelligence agent flags the correlation between planner removal and downtime surge within days. The pattern was always in the data. Nobody was watching.</p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- ═══ ZONE 2: Supply Chain ═══ -->
+      <section class="zone" data-zone="2">
+        <div class="zone-marker"><div class="marker-pulse"></div><div class="marker-dot"></div></div>
+        <article class="card">
+          <header class="card-head">
+            <span class="card-num">03</span>
+            <span class="card-tag">supply chain</span>
+          </header>
+          <h2 class="card-title">The scapegoat was only 30% guilty</h2>
+          <p>A single-source component from Penang: 68% on-time delivery. Everyone pointed at it.</p>
+          <div class="card-big-stat">
+            <span class="big-num">70%</span>
+            <span class="big-context">of late orders had nothing to do with the supplier</span>
+          </div>
+          <p>The real drivers were internal: broken scheduling, missing planners, a tech platform nobody trusted. The data was there — it just wasn't connected.</p>
+          <div class="card-insight">
+            <div class="insight-header">
+              <span class="insight-icon"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a4 4 0 0 0 6 .5l2-2a4 4 0 0 0-6-6l-1 1"/><path d="M14 11a4 4 0 0 0-6-.5l-2 2a4 4 0 0 0 6 6l1-1"/></svg></span>
+              <span class="insight-label">AI Agent: Supply Chain Monitor</span>
+            </div>
+            <p>Cross-references supplier data with production schedules, maintenance logs, and system accuracy in real time. Doesn't just track what's late — tells you why, before you ask.</p>
+          </div>
+        </article>
+      </section>
+
+      <!-- ═══ ZONE 3: People ═══ -->
+      <section class="zone" data-zone="3">
+        <div class="zone-marker"><div class="marker-pulse"></div><div class="marker-dot"></div></div>
+        <article class="card">
+          <header class="card-head">
+            <span class="card-num">04</span>
+            <span class="card-tag">people crisis</span>
+          </header>
+          <h2 class="card-title">The best people leave first</h2>
+          <p>9 of 31 plant leaders left in 12 months. The exit interviews said the same thing every time:</p>
+          <blockquote class="card-quote">
+            "My decisions were taken away. I'm measured on things I can't control. I'm firefighting every shift."
+          </blockquote>
+          <p>Two more critical leaders were about to leave. <strong>Nobody in the C-suite knew.</strong></p>
+          <div class="card-insight">
+            <div class="insight-header">
+              <span class="insight-icon"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 12l5-5"/></svg></span>
+              <span class="insight-label">AI Agent: Talent Risk Radar</span>
+            </div>
+            <p>Monitors engagement signals, exit patterns, and workload metrics. Flags flight risks weeks before resignation — and recommends which conversations to have, with whom, about what.</p>
+          </div>
+        </article>
+      </section>
+
+      <!-- ═══ ZONE 4: Technology ═══ -->
+      <section class="zone" data-zone="4">
+        <div class="zone-marker"><div class="marker-pulse"></div><div class="marker-dot"></div></div>
+        <article class="card">
+          <header class="card-head">
+            <span class="card-num">05</span>
+            <span class="card-tag">technology trap</span>
+          </header>
+          <h2 class="card-title">$44M on a system nobody trusts</h2>
+          <p>The new manufacturing execution system went live half-migrated. Planners built shadow spreadsheets to survive.</p>
+          <div class="card-gauge">
+            <div class="gauge-track">
+              <div class="gauge-fill" style="--pct: 71"></div>
+              <div class="gauge-target" style="--pct: 95"></div>
+            </div>
+            <div class="gauge-labels">
+              <span class="gauge-actual">71% actual</span>
+              <span class="gauge-goal">95% target</span>
+            </div>
+          </div>
+          <p>Meanwhile, the one plant NOT on the new system — and still had its planners — ran at <strong>94% SLA.</strong> The control group was right there. Nobody asked the question.</p>
+          <div class="card-insight">
+            <div class="insight-header">
+              <span class="insight-icon"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span>
+              <span class="insight-label">AI Agent: System Health Watchdog</span>
+            </div>
+            <p>Continuously audits system accuracy against outcomes. When planners build workarounds, it escalates the gap and quantifies the business impact in dollars — not dashboards.</p>
+          </div>
+        </article>
+      </section>
+
+      <!-- ═══ ZONE 5: The Decision ═══ -->
+      <section class="zone" data-zone="5">
+        <div class="zone-marker"><div class="marker-pulse"></div><div class="marker-dot"></div></div>
+        <article class="card">
+          <header class="card-head">
+            <span class="card-num">06</span>
+            <span class="card-tag">the decision</span>
+          </header>
+          <h2 class="card-title">$40 million. One shot.</h2>
+          <p>The COO gets an emergency budget. <strong>Not enough for everything. Enough to choose.</strong></p>
+          <div class="card-choices">
+            <span class="choice">Supply chain fixes</span>
+            <span class="choice">Technology repairs</span>
+            <span class="choice">Rehire planners</span>
+            <span class="choice">Retain leaders</span>
+            <span class="choice">Save the customer</span>
+            <span class="choice">Add capacity</span>
+          </div>
+          <p>The quality of this decision depends entirely on the quality of the diagnosis. And the diagnosis depends on whether anyone connected the signals.</p>
+          <div class="card-insight">
+            <div class="insight-header">
+              <span class="insight-icon"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-1 5 3 3 0 0 0 2 5 3 3 0 0 0 5 1V5a3 3 0 0 0-3-1z"/><path d="M15 4a3 3 0 0 1 3 3 3 3 0 0 1 1 5 3 3 0 0 1-2 5 3 3 0 0 1-5 1"/></svg></span>
+              <span class="insight-label">AI Agent: Decision Intelligence</span>
+            </div>
+            <p>Models downstream effects of every allocation scenario in real time. Shows trade-offs: "Fund supply but not workforce → here's what happens at Brno in 60 days." Doesn't decide for you. Makes sure you can't bet $40M in the dark.</p>
+          </div>
+        </article>
+      </section>
+
+      <!-- ═══ ZONE 6: Escalation ═══ -->
+      <section class="zone" data-zone="6">
+        <div class="zone-marker"><div class="marker-pulse"></div><div class="marker-dot"></div></div>
+        <article class="card">
+          <header class="card-head">
+            <span class="card-num">07</span>
+            <span class="card-tag">escalation</span>
+          </header>
+          <h2 class="card-title">Then everything hits at once</h2>
+          <div class="card-timeline">
+            <div class="tl-item urgent"><span class="tl-day">Mon</span> Production line goes down at Brno</div>
+            <div class="tl-item urgent"><span class="tl-day">Tue</span> Customer accelerates contract review to 10 days</div>
+            <div class="tl-item critical"><span class="tl-day">Wed</span> Brno plant head resigns</div>
+            <div class="tl-item"><span class="tl-day">Thu</span> CFO demands 5% out of operating expenses</div>
+            <div class="tl-item critical"><span class="tl-day">Fri</span> Board wants the recovery plan — today</div>
+          </div>
+          <div class="card-compare">
+            <div class="compare-col bad">
+              <div class="compare-label">Without AI</div>
+              <p>Each crisis is a surprise. The team is reactive. Context is lost between meetings. The same information is re-explained to five different people.</p>
+            </div>
+            <div class="compare-col good">
+              <div class="compare-label">With AI Agents</div>
+              <p>Agents triage crises against the existing plan. Surface which events are containable, which change fundamentals. Draft communications. Keep everyone on the same truth — in real time.</p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- ═══ ZONE 7: The Future ═══ -->
+      <section class="zone" data-zone="7">
+        <div class="zone-marker"><div class="marker-pulse"></div><div class="marker-dot"></div></div>
+        <article class="card card-final">
+          <header class="card-head">
+            <span class="card-num">08</span>
+            <span class="card-tag">the future</span>
+          </header>
+          <h2 class="card-title">This isn't science fiction. This is next quarter.</h2>
+          <p>Every signal that mattered was already in the company's data. The problem was never information. <strong>The problem was connection, speed, and pattern recognition at scale.</strong></p>
+          <div class="card-stack">
+            <div class="stack-item"><span class="stack-icon"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 12l5-5"/></svg></span> Supply chain monitoring</div>
+            <div class="stack-item"><span class="stack-icon"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></span> Real-time quality audits</div>
+            <div class="stack-item"><span class="stack-icon"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M16 6a3 3 0 0 1 0 6"/><path d="M18 20a6 6 0 0 0-3-5"/></svg></span> Talent risk detection</div>
+            <div class="stack-item"><span class="stack-icon"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-1 5 3 3 0 0 0 2 5 3 3 0 0 0 5 1V5a3 3 0 0 0-3-1z"/><path d="M15 4a3 3 0 0 1 3 3 3 3 0 0 1 1 5 3 3 0 0 1-2 5 3 3 0 0 1-5 1"/></svg></span> Decision scenario modelling</div>
+            <div class="stack-item"><span class="stack-icon"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span> Automated stakeholder comms</div>
+            <div class="stack-item"><span class="stack-icon"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l9 16H3z"/><path d="M12 10v4"/><circle cx="12" cy="17" r=".6" fill="currentColor"/></svg></span> Crisis triage &amp; response</div>
+          </div>
+          <p>AI agents don't replace executive judgement. They make it possible to exercise that judgement with <strong>real evidence instead of opinion</strong> — at the speed the business actually moves.</p>
+          <div class="card-cta-line">
+            The question isn't whether AI agents will run your operations.<br>
+            It's whether you'll have them — or compete against someone who does.
+          </div>
+        </article>
+      </section>
+
+    </div><!-- /world -->
+
+    <!-- The operator — SVG executive figure -->
+    <div class="character" id="character">
+      <svg class="char-svg" viewBox="0 0 88 124" fill="none" aria-hidden="true">
+        <g class="char-figure">
+
+          <!-- Back leg -->
+          <g class="leg-back">
+            <rect x="38" y="78" width="9" height="30" rx="4" fill="#2b2b33"/>
+            <path d="M36 106h13v5a2 2 0 0 1-2 2H38a2 2 0 0 1-2-2z" fill="#141418"/>
+          </g>
+
+          <!-- Free arm (jacket sleeve + hand) -->
+          <g class="arm-free">
+            <rect x="26" y="48" width="8" height="26" rx="4" fill="#232a3a"/>
+            <circle cx="30" cy="76" r="4" fill="#e3b48f"/>
+          </g>
+
+          <!-- Neck — drawn before the jacket so the collar closes over it -->
+          <rect x="41" y="30" width="6" height="9" rx="2.5" fill="#c9926f"/>
+
+          <!-- Torso: jacket body -->
+          <path d="M30 47c0-6 4-10 9-11h10c5 1 9 5 9 11v33H30z" fill="#2b3348"/>
+          <!-- Shirt panel + tie -->
+          <path d="M39 36h10v18l-5 5-5-5z" fill="#f2f2f4"/>
+          <path d="M44 44l4 4-4 16-4-16z" fill="var(--primary)"/>
+          <path d="M44 41l3.5 3.5-3.5 3-3.5-3z" fill="#e00b41"/>
+          <!-- Lapels -->
+          <path d="M39 36l-9 11v10l9-15z" fill="#232a3a"/>
+          <path d="M49 36l9 11v10l-9-15z" fill="#232a3a"/>
+          <!-- Lapel pin -->
+          <circle class="char-pin" cx="35" cy="50" r="2" fill="var(--primary)" opacity="0.55"/>
+
+          <!-- Front leg -->
+          <g class="leg-front">
+            <rect x="41" y="78" width="9" height="30" rx="4" fill="#353543"/>
+            <path d="M39 106h13v5a2 2 0 0 1-2 2H41a2 2 0 0 1-2-2z" fill="#1c1c22"/>
+          </g>
+
+          <!-- Head -->
+          <path d="M36 16c0-5 3.5-8 8-8s8 3 8 8v8c0 5-3.5 9-8 9s-8-4-8-9z" fill="#e3b48f"/>
+          <!-- Hair -->
+          <path d="M35 18c-1-8 4-12 9-12s10 4 9 12c0-4-3-6-9-6s-9 2-9 6z" fill="#1f1b1a"/>
+          <!-- Brows -->
+          <rect x="39" y="20" width="4" height="1.4" rx="0.7" fill="#1f1b1a"/>
+          <rect x="45" y="20" width="4" height="1.4" rx="0.7" fill="#1f1b1a"/>
+          <!-- Eyes -->
+          <g class="char-eyes">
+            <circle cx="41" cy="24" r="1.5" fill="#1f1b1a"/>
+            <circle cx="47" cy="24" r="1.5" fill="#1f1b1a"/>
+          </g>
+          <!-- Mouth -->
+          <rect class="char-mouth" x="41" y="29" width="6" height="1.8" rx="0.9" fill="#8a5a49"/>
+          <!-- Collar closing over the neck -->
+          <path d="M38.5 35.5h11l-5.5 5z" fill="#ffffff"/>
+
+          <!-- Briefcase arm, drawn last so the case sits in front -->
+          <g class="arm-case">
+            <rect x="54" y="48" width="8" height="26" rx="4" fill="#232a3a"/>
+            <circle cx="58" cy="76" r="4" fill="#e3b48f"/>
+            <!-- Briefcase -->
+            <path d="M54 82h9v4h-9z" fill="none" stroke="#5a4636" stroke-width="1.6"/>
+            <rect x="48" y="85" width="21" height="15" rx="2.5" fill="#6b4f3a"/>
+            <rect x="48" y="91" width="21" height="1.6" fill="#513a2a"/>
+            <rect x="56" y="90" width="5" height="3.5" rx="1" fill="#c9a227"/>
+          </g>
+
+        </g>
+      </svg>
+      <div class="char-shadow"></div>
+    </div>
+
+    <!-- ═══ HUD ═══ -->
+
+    <!-- Progress bar -->
+    <nav class="hud-progress" id="hudProgress" aria-label="Journey progress">
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-dots" id="progressDots"></div>
+    </nav>
+
+    <!-- Speaker bar -->
+    <div class="hud-speaker hidden" id="hudSpeaker">
+      <div class="speaker-avatar" id="spkAvatar"></div>
+      <div class="speaker-meta">
+        <div class="speaker-name" id="spkName">—</div>
+        <div class="speaker-role" id="spkRole">—</div>
+      </div>
+      <div class="speaker-wave" id="spkWave">
+        <i></i><i></i><i></i><i></i><i></i>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="hud-controls">
+      <button class="ctrl-btn" id="btnPrev" disabled aria-label="Previous">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M12 4L6 10L12 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <button class="ctrl-btn primary" id="btnNext" aria-label="Next">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M8 4L14 10L8 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <!-- Voice toggle -->
+    <button class="hud-voice" id="btnVoice" aria-label="Toggle voice narration">
+      <span class="voice-icon" id="voiceIcon"><svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M17 9a4 4 0 0 1 0 6"/><path d="M19.5 6.5a8 8 0 0 1 0 11"/></svg></span>
+      <span class="voice-label" id="voiceLabel">Voice on</span>
+      <span class="voice-engine" id="voiceEngine">System</span>
+    </button>
+
+    <!-- Zone counter -->
+    <div class="hud-counter">
+      <span id="counterCurrent">0</span>
+      <span class="counter-sep">/</span>
+      <span id="counterTotal">8</span>
+    </div>
+
+  </main>
+
+  <!-- Scripts (order matters) -->
+  <script src="js/data.js"></script>
+  <script src="js/voices.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/skyline.js"></script>
+  <script src="js/character.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/intro.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
