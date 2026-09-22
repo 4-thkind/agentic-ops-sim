@@ -1,0 +1,32 @@
+# Generated narration — rendered by `python prewarm.py` in ~30s.
+# Roughly 2MB of MP3 that would otherwise land in every clone.
+server/cache/
+*.mp3
+*.part
+
+# Personal context for local tooling - not part of the project.
+CONTEXT.md
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.ruff_cache/
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs and scratch
+*.log
