@@ -1,0 +1,100 @@
+/* ── Design Tokens ──
+   Structure follows the Airbnb system (modest display weights, single accent
+   voltage, 4px base spacing, soft radii, one shadow tier) re-grounded on a
+   dark canvas so the night-city simulation still reads. */
+:root {
+  /* Surfaces — dark canvas, ink inverted from the Airbnb light system */
+  --canvas:        #0f0f10;
+  --surface-soft:  #161618;
+  --surface-card:  #1c1c1f;
+  --surface-strong:#232327;
+
+  /* Text */
+  --ink:        #f7f7f7;
+  --body:       #d6d6d6;
+  --muted:      #a0a0a4;
+  --muted-soft: #74747a;
+
+  /* Hairlines */
+  --hairline:        rgba(255, 255, 255, 0.11);
+  --hairline-soft:   rgba(255, 255, 255, 0.06);
+  --border-strong:   rgba(255, 255, 255, 0.22);
+
+  /* The single brand voltage — Rausch. Used scarcely. */
+  --primary:        #ff385c;
+  --primary-active: #e00b41;
+  --primary-soft:   rgba(255, 56, 92, 0.12);
+  --primary-line:   rgba(255, 56, 92, 0.28);
+  --on-primary:     #ffffff;
+
+  /* Semantic — restricted to comparison blocks and timeline severity */
+  --positive:      #4ecb92;
+  --positive-soft: rgba(78, 203, 146, 0.1);
+  --negative:      #ff7a70;
+  --negative-soft: rgba(255, 122, 112, 0.1);
+
+  /* World */
+  --ground:     #131316;
+  --sky-top:    #0b0b0d;
+  --sky-mid:    #121215;
+  --sky-bottom: #1a1a1f;
+  --window:     #ffd9a8;
+
+  /* Typography — Inter is the documented Cereal substitute */
+  --font: 'Inter', -apple-system, system-ui, Roboto, 'Helvetica Neue', sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Type scale (size / weight / line-height / tracking) */
+  --display-xl: 700 28px/1.43 var(--font);
+  --display-lg: 500 22px/1.18 var(--font);
+  --display-md: 700 21px/1.43 var(--font);
+  --display-sm: 600 20px/1.20 var(--font);
+  --title-md:   600 16px/1.25 var(--font);
+  --title-sm:   500 16px/1.25 var(--font);
+  --body-md:    400 16px/1.5  var(--font);
+  --body-sm:    400 14px/1.43 var(--font);
+  --caption:    500 14px/1.29 var(--font);
+  --caption-sm: 400 13px/1.23 var(--font);
+  --badge:      600 11px/1.18 var(--font);
+  --micro:      700 12px/1.33 var(--font);
+  --button-md:  500 16px/1.25 var(--font);
+  --button-sm:  500 14px/1.29 var(--font);
+
+  /* Spacing — 4px base with a 2px micro-step */
+  --sp-xxs: 2px;
+  --sp-xs:  4px;
+  --sp-sm:  8px;
+  --sp-md:  12px;
+  --sp-base:16px;
+  --sp-lg:  24px;
+  --sp-xl:  32px;
+  --sp-xxl: 48px;
+  --sp-section: 64px;
+
+  /* Radii */
+  --r-sm:   8px;
+  --r-md:   14px;
+  --r-lg:   20px;
+  --r-xl:   32px;
+  --r-full: 9999px;
+
+  /* Elevation — one tier, as in the source system */
+  --shadow: rgba(0, 0, 0, 0.3) 0 0 0 1px,
+            rgba(0, 0, 0, 0.35) 0 2px 6px 0,
+            rgba(0, 0, 0, 0.45) 0 4px 8px 0;
+
+  /* Motion */
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --t-fast:  0.2s;
+  --t-med:   0.4s;
+  --t-slow:  0.8s;
+  --t-crawl: 1.4s;
+}
+
+body {
+  font: var(--body-md);
+  background: var(--canvas);
+  color: var(--body);
+  overflow: hidden;
+}
