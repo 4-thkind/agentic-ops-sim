@@ -1,0 +1,135 @@
+/* ── Simulation container ── */
+.sim {
+  position: fixed; inset: 0;
+  overflow: hidden;
+}
+.sim[aria-hidden="true"] { visibility: hidden; }
+.sim.active { visibility: visible; }
+
+/* ── Sky ── */
+.sky {
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    175deg,
+    var(--sky-top) 0%,
+    var(--sky-mid) 45%,
+    var(--sky-bottom) 78%,
+    var(--ground) 100%
+  );
+  z-index: 0;
+}
+
+/* ── World scrolling container ── */
+.world {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  transition: transform var(--t-crawl) var(--ease-out);
+  will-change: transform;
+  z-index: 2;
+}
+
+/* ── Ground ── */
+.ground {
+  position: fixed;
+  bottom: 0; left: 0;
+  width: 100%;
+  height: 180px;
+  background: var(--ground);
+  z-index: 3;
+}
+.ground::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--primary) 50%,
+    transparent 100%
+  );
+  opacity: 0.35;
+}
+.ground-glow {
+  position: absolute;
+  top: -60px; left: 0; right: 0;
+  height: 60px;
+  background: linear-gradient(to top, rgba(15, 27, 45, 0.8), transparent);
+}
+
+/* ── City skyline ── */
+.skyline {
+  position: fixed;
+  bottom: 180px; left: 0;
+  width: 300vw;
+  height: 280px;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  padding: 0 40px;
+  opacity: 0.2;
+  transition: transform 1.8s var(--ease-out);
+  will-change: transform;
+}
+.bldg {
+  flex: none;
+  background: var(--surface-soft);
+  border-radius: 3px 3px 0 0;
+  position: relative;
+  border: 1px solid var(--hairline-soft);
+  border-bottom: none;
+}
+.bldg-window {
+  position: absolute;
+  width: 6px; height: 6px;
+  border-radius: 1px;
+  background: var(--window);
+  opacity: 0.6;
+}
+
+/* ── Zones ── */
+.zone {
+  flex: none;
+  width: 100vw;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--sp-lg);
+  position: relative;
+  z-index: 5;
+}
+
+/* Zone marker on ground */
+.zone-marker {
+  position: fixed;
+  bottom: 144px;
+  left: clamp(32px, calc(50% - 480px), 240px);
+  margin-left: 50px;
+  z-index: 4;
+}
+.marker-dot {
+  width: 14px; height: 14px;
+  background: var(--primary);
+  border-radius: 50%;
+  position: relative;
+  z-index: 2;
+}
+.marker-pulse {
+  position: absolute;
+  inset: -8px;
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+  opacity: 0;
+  z-index: 1;
+}
+.zone.active .marker-pulse {
+  animation: pulse-ring 2s ease-out infinite;
+}
+@keyframes pulse-ring {
+  0%   { opacity: 0.6; transform: scale(0.8); }
+  100% { opacity: 0;   transform: scale(2.2); }
+}

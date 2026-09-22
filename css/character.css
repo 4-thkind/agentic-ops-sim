@@ -1,0 +1,78 @@
+/* ── The operator ──
+   An SVG executive: suit jacket, collar and tie, briefcase in hand.
+   Animation drives named groups inside the SVG rather than DOM nodes. */
+/* Parked to the left of the card rather than centred under it, where the
+   figure used to overlap the chapter content. */
+.character {
+  position: fixed;
+  bottom: 148px;
+  left: clamp(32px, calc(50% - 480px), 240px);
+  z-index: 10;
+  width: 114px;
+}
+
+.char-svg {
+  width: 114px;
+  height: 161px;
+  overflow: visible;
+}
+
+/* Walking — torso bob, legs swing, briefcase arm swings against them */
+.character.walking .char-figure { animation: bob 0.5s ease-in-out infinite; }
+.character.walking .leg-back    { animation: swing-back 0.5s ease-in-out infinite alternate; }
+.character.walking .leg-front   { animation: swing-front 0.5s ease-in-out infinite alternate; }
+.character.walking .arm-case    { animation: swing-case 0.5s ease-in-out infinite alternate; }
+.character.walking .arm-free    { animation: swing-free 0.5s ease-in-out infinite alternate; }
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-2.5px); }
+}
+@keyframes swing-back  { from { transform: rotate(-16deg); } to { transform: rotate(16deg); } }
+@keyframes swing-front { from { transform: rotate(16deg); }  to { transform: rotate(-16deg); } }
+@keyframes swing-case  { from { transform: rotate(9deg); }   to { transform: rotate(-9deg); } }
+@keyframes swing-free  { from { transform: rotate(-11deg); } to { transform: rotate(11deg); } }
+
+/* Transform origins — joints, not bounding-box centres */
+.leg-back, .leg-front { transform-origin: 44px 78px; }
+.arm-case  { transform-origin: 58px 50px; }
+.arm-free  { transform-origin: 30px 50px; }
+.char-figure { transform-origin: 44px 62px; }
+
+/* Arrival — settles, then straightens the jacket */
+.character.arrived .char-figure {
+  animation: arrive 0.55s var(--ease-spring);
+}
+@keyframes arrive {
+  0%   { transform: translateY(0); }
+  45%  { transform: translateY(-7px); }
+  100% { transform: translateY(0); }
+}
+
+/* Blink — runs always, so the figure never reads as frozen */
+.char-eyes { animation: blink 5.2s infinite; transform-origin: center; }
+@keyframes blink {
+  0%, 94%, 100% { transform: scaleY(1); }
+  96%           { transform: scaleY(0.1); }
+}
+
+/* Speaking — jaw moves, lapel pin lights */
+.character.speaking .char-mouth { animation: talk 0.28s ease-in-out infinite alternate; }
+.character.speaking .char-pin   { animation: pin-glow 1.4s ease-in-out infinite; }
+@keyframes talk {
+  from { transform: scaleY(0.55); }
+  to   { transform: scaleY(1.5); }
+}
+.char-mouth { transform-origin: 44px 30px; }
+@keyframes pin-glow {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 1; }
+}
+
+/* Ground contact */
+.char-shadow {
+  width: 66px; height: 10px;
+  margin: -8px auto 0;
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.55), transparent 70%);
+  border-radius: 50%;
+}

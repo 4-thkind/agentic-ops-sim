@@ -1,0 +1,81 @@
+/* ── Mobile ── */
+@media (max-width: 744px) {
+  /* The card scrolls inside the zone rather than overflowing it, so long
+     chapters stay reachable without pushing under the HUD. */
+  .zone {
+    align-items: flex-start;
+    padding: 76px var(--sp-base) 0;
+  }
+  .card {
+    padding: var(--sp-base);
+    margin-bottom: 0;
+    border-radius: var(--r-md);
+    max-height: calc(100vh - 210px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+  .card-title { font-size: 22px; line-height: 1.22; }
+  .card p { font-size: 15px; }
+
+  .card-compare  { grid-template-columns: 1fr; }
+  .card-stats    { grid-template-columns: 1fr; gap: var(--sp-md); }
+  .card-stack    { grid-template-columns: 1fr; }
+  .card-big-stat { flex-direction: column; gap: var(--sp-xs); align-items: flex-start; }
+  .big-num       { font-size: 48px; }
+  .big-context   { max-width: none; }
+
+  .hud-controls { bottom: var(--sp-lg); right: var(--sp-md); }
+  .ctrl-btn     { width: 44px; height: 44px; }
+
+  .hud-speaker {
+    bottom: var(--sp-md);
+    left: var(--sp-md);
+    right: 104px;
+    transform: none;
+    min-width: 0;
+    max-width: none;
+    padding: 6px var(--sp-md) 6px 6px;
+  }
+  .hud-speaker.hidden { transform: translateY(12px); }
+  .speaker-avatar { width: 32px; height: 32px; }
+  .speaker-meta   { min-width: 0; }
+  .speaker-name   { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .speaker-role   { display: none; }
+
+  .hud-voice { top: var(--sp-md); right: var(--sp-md); padding: 8px; }
+  .voice-label, .voice-engine { display: none; }
+  .hud-counter { top: var(--sp-md); left: var(--sp-md); }
+  .hud-progress { top: 58px; width: min(320px, 62vw); }
+
+  .intro-features { gap: var(--sp-sm); }
+  .feat-icon { width: 28px; height: 28px; }
+
+  /* The figure is decoration on a phone — the card owns the screen. */
+  .character { display: none; }
+  .zone-marker { display: none; }
+}
+
+/* ── Tablet ── */
+@media (min-width: 745px) and (max-width: 1128px) {
+  .card { max-width: 600px; }
+}
+
+/* ── Short viewports: keep the card clear of the ground plane ── */
+@media (min-width: 745px) and (max-height: 760px) {
+  .card {
+    margin-bottom: 120px;
+    max-height: calc(100vh - 190px);
+    overflow-y: auto;
+  }
+  .character { transform: scale(0.82); transform-origin: bottom center; }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
