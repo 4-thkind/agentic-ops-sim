@@ -72,12 +72,28 @@ and that the rate/pitch mapping clamps correctly.
 
 ## Design
 
-Structure follows the Airbnb system documented in `DESIGN-airbnb.md`, re-grounded
-on a dark canvas: modest display weights, a single accent voltage (Rausch
-`#ff385c`) used scarcely, a 4px spacing base, soft radii, and one shadow tier.
-Tokens live in `css/tokens.css`.
+Structure follows the Airbnb system documented in `DESIGN-airbnb.md`: modest
+display weights, a single accent used scarcely, a 4px spacing base, soft radii,
+and one shadow tier.
 
-Every icon is inline SVG — there are no emoji in the interface.
+The palette is three colours:
+
+| Role | Colour |
+|---|---|
+| Surfaces | Navy `#1F2A44` |
+| Text | Warm Beige `#E8DCC8` |
+| Accent | Soft Gold `#C6A75E` |
+
+The scene is a boardroom built in HTML and CSS: panelled beige wall,
+downlights, a tan wainscot under a gold rail, a navy carpet, a city window.
+The presenter walks on for the first slide, then stands beside the
+wall-mounted screen and gestures to it while he speaks. Each chapter is a
+slide on that screen, scaled to fit so it never scrolls on desktop.
+
+Titles and headline figures are set in Source Serif 4; everything else is Inter.
+All text/background pairs pass WCAG AA. Tokens live in `css/tokens.css`.
+
+Every icon is inline SVG. The interface uses no emoji.
 
 ## Layout
 
@@ -86,7 +102,8 @@ index.html          markup, the SVG executive figure, all zone content
 css/tokens.css      the design system — colors, type scale, spacing, radii
 css/cards.css       chapter cards and their content blocks
 css/hud.css         progress, speaker bar, controls
-css/character.css   the walking figure
+css/character.css   the presenter
+css/world.css       the boardroom
 js/data.js          speakers and narration scripts (source of truth)
 js/voices.js        neural playback with browser fallback
 js/navigation.js    zone transitions, progress, input
