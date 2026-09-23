@@ -1,26 +1,50 @@
 /* ── Cards ──
-   Airbnb card structure: {r-md} corner clipping, 24px internal padding,
-   one shadow tier, hairline border. No glow, no gradient chrome. */
+   Each card is the slide on a wall-mounted screen: navy panel, dark bezel,
+   a small gold power light. --fit (set in app.js) scales the whole screen
+   down on short viewports so a slide never needs to scroll. */
 .card {
   background: var(--surface-card);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-md);
-  box-shadow: var(--shadow);
+  border: 10px solid #121A2B;
+  border-radius: var(--r-lg);
+  box-shadow:
+    0 0 0 1px rgba(8, 12, 22, 0.35),
+    0 18px 40px -8px rgba(21, 29, 48, 0.45),
+    0 4px 10px rgba(21, 29, 48, 0.2);
   padding: clamp(var(--sp-lg), 4vw, var(--sp-xl));
-  max-width: 680px;
+  max-width: 700px;
   width: 100%;
-  margin-bottom: 150px;
+  margin-bottom: 170px;
   position: relative;
   opacity: 0;
-  transform: translateY(24px);
+  transform: translateY(24px) scale(var(--fit, 1));
   transition:
     opacity 0.6s var(--ease-out) 0.45s,
     transform 0.6s var(--ease-out) 0.45s;
 }
 .zone.active .card {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(var(--fit, 1));
 }
+/* Power light on the bottom bezel */
+.card::after {
+  content: '';
+  position: absolute;
+  bottom: -7px; left: 50%;
+  width: 4px; height: 4px;
+  margin-left: -2px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 6px rgba(198, 167, 94, 0.8);
+}
+
+/* Only mobile ever scrolls a card; keep that scrollbar in the palette */
+.card {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(232, 220, 200, 0.25) transparent;
+}
+.card::-webkit-scrollbar { width: 6px; }
+.card::-webkit-scrollbar-track { background: transparent; }
+.card::-webkit-scrollbar-thumb { background: rgba(232, 220, 200, 0.25); border-radius: 3px; }
 
 /* ── Header: index + section tag ── */
 .card-head {
@@ -47,7 +71,10 @@
 /* Display weights stay modest — the system trusts structure over type size */
 .card-title {
   font: var(--display-xl);
-  letter-spacing: -0.02em;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 30px;
+  letter-spacing: -0.01em;
   line-height: 1.2;
   color: var(--ink);
   margin-bottom: var(--sp-md);
@@ -64,8 +91,9 @@
 
 /* ── Insight block — the AI agent read on each failure ── */
 .card-insight {
-  background: var(--primary-soft);
-  border: 1px solid var(--primary-line);
+  background: var(--surface-soft);
+  border: 1px solid var(--hairline);
+  border-left: 2px solid var(--primary);
   border-radius: var(--r-sm);
   padding: var(--sp-base) var(--sp-lg);
   margin-top: var(--sp-base);
@@ -102,6 +130,9 @@
 .stat { display: flex; flex-direction: column; gap: var(--sp-xxs); }
 .stat-val {
   font: var(--display-md);
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 600;
   color: var(--ink);
   letter-spacing: -0.01em;
 }
@@ -122,8 +153,8 @@
   padding: var(--sp-base);
   border: 1px solid var(--hairline);
 }
-.compare-col.bad  { background: var(--negative-soft); border-color: rgba(255, 122, 112, 0.2); }
-.compare-col.good { background: var(--positive-soft); border-color: rgba(78, 203, 146, 0.2); }
+.compare-col.bad  { background: var(--negative-soft); border-color: var(--negative-line); }
+.compare-col.good { background: var(--positive-soft); border-color: var(--positive-line); }
 .compare-label {
   font: var(--badge);
   text-transform: uppercase;
@@ -151,6 +182,7 @@
   border-bottom: 1px solid var(--hairline-soft);
 }
 .big-num {
+  font-family: var(--serif);
   font-size: 64px;
   font-weight: 700;
   line-height: 1.1;
@@ -172,6 +204,8 @@
   background: var(--surface-soft);
   border-radius: 0 var(--r-sm) var(--r-sm) 0;
   font: var(--body-md);
+  font-family: var(--serif);
+  font-size: 18px;
   font-style: italic;
   color: var(--ink);
 }
@@ -282,9 +316,14 @@
   padding: var(--sp-lg);
   text-align: center;
   font: var(--title-md);
+  font-family: var(--serif);
+  font-size: 19px;
+  font-style: italic;
+  font-weight: 500;
   line-height: 1.5;
+  text-wrap: balance;
   color: var(--ink);
-  background: var(--primary-soft);
+  background: var(--surface-soft);
   border: 1px solid var(--primary-line);
   border-radius: var(--r-sm);
 }
