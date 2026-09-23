@@ -84,8 +84,6 @@ const Navigation = (() => {
     // Move world
     world.style.transform = `translateX(-${idx * 100}vw)`;
 
-    // Skyline parallax
-    Skyline.parallax(idx);
 
     // Update zone classes
     document.querySelectorAll('.zone').forEach((z, i) => {

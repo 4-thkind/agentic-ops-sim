@@ -10,14 +10,25 @@
   const startBtn = document.getElementById('startBtn');
   const sim      = document.getElementById('sim');
 
-  // 1. Init intro canvas animation
-  Intro.init();
-
-  // 2. Init all simulation modules (hidden behind intro)
-  ParticleSystem.init();
-  Skyline.generate();
+  // 1. Init the simulation behind the intro
   Character.init();
   Navigation.init();
+
+  // 2. Scale each slide so it fits without scrolling. Mobile scrolls instead,
+  //    since shrinking text on a phone makes it unreadable.
+  const TOP_BAND = 84, BOTTOM = 170, AIR = 16;
+  function fitCards() {
+    const mobile = window.innerWidth <= 744;
+    const room = window.innerHeight - TOP_BAND - BOTTOM - AIR;
+    document.querySelectorAll('.card').forEach(card => {
+      if (mobile) { card.style.removeProperty('--fit'); return; }
+      const fit = Math.min(1, room / card.offsetHeight);
+      card.style.setProperty('--fit', fit.toFixed(3));
+    });
+  }
+  fitCards();
+  window.addEventListener('resize', fitCards);
+  if (document.fonts) document.fonts.ready.then(fitCards);
 
   // 3. Hide loader after fonts/assets settle
   window.addEventListener('load', () => {
@@ -42,9 +53,6 @@
     Intro.exit(() => {
       sim.removeAttribute('aria-hidden');
       sim.classList.add('active');
-
-      // Start ambient systems
-      ParticleSystem.start();
 
       // Navigate to first zone after a brief beat
       setTimeout(() => {
