@@ -4,11 +4,15 @@
   top: var(--sp-lg); left: 50%;
   transform: translateX(-50%);
   z-index: 20;
-  width: min(460px, 78vw);
+  width: min(460px, 60vw);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--sp-sm);
+  padding: 12px var(--sp-lg) 10px;
+  background: var(--surface-card);
+  border-radius: var(--r-full);
+  box-shadow: var(--shadow);
 }
 .progress-track {
   width: 100%;
@@ -47,7 +51,6 @@
   transform: translateX(-50%);
   z-index: 20;
   background: var(--surface-card);
-  border: 1px solid var(--hairline);
   border-radius: var(--r-full);
   box-shadow: var(--shadow);
   padding: var(--sp-sm) var(--sp-lg) var(--sp-sm) var(--sp-sm);
@@ -114,19 +117,21 @@
 .ctrl-btn {
   width: 48px; height: 48px;
   border-radius: 50%;
-  border: 1px solid var(--hairline);
+  border: 2px solid transparent;
+  box-shadow: var(--shadow);
   background: var(--surface-card);
   color: var(--ink);
   display: grid; place-items: center;
   transition: border-color var(--t-fast), background var(--t-fast);
 }
 .ctrl-btn:hover:not(:disabled) { border-color: var(--border-strong); }
-.ctrl-btn:disabled { opacity: 0.3; cursor: default; }
+.ctrl-btn:disabled { cursor: default; color: var(--muted-soft); }
 .ctrl-btn.primary {
   background: var(--primary);
   color: var(--on-primary);
-  border-color: var(--primary);
+  border-color: var(--surface-card);
 }
+.ctrl-btn.primary:disabled { background: var(--surface-card); color: var(--muted-soft); }
 .ctrl-btn.primary:hover:not(:disabled) { background: var(--primary-active); }
 
 /* ── Voice toggle ── */
@@ -135,7 +140,7 @@
   top: var(--sp-lg); right: var(--sp-lg);
   z-index: 20;
   background: var(--surface-card);
-  border: 1px solid var(--hairline);
+  box-shadow: var(--shadow);
   border-radius: var(--r-full);
   padding: var(--sp-sm) var(--sp-base);
   display: flex; align-items: center; gap: var(--sp-sm);
@@ -167,7 +172,7 @@
   font-family: var(--mono);
   color: var(--muted);
   background: var(--surface-card);
-  border: 1px solid var(--hairline);
+  box-shadow: var(--shadow);
   border-radius: var(--r-full);
   padding: var(--sp-sm) var(--sp-base);
 }
