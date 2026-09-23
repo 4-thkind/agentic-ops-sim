@@ -1,25 +1,143 @@
+/* ── Boardroom backdrop ──
+   Beige panelled wall, tan wainscot under a gold rail, navy carpet.
+   Everything is anchored to --floor, the line the presenter stands on. */
+:root {
+  --floor: 150px;
+  --wall:       #E8DCC8;
+  --wall-shade: #DCCDB2;
+  --wainscot:   #CDBB98;
+  --carpet:     #1F2A44;
+}
+
+.office {
+  position: fixed; inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  /* Wall: panel grooves every 160px over a soft top-to-bottom shade */
+  background:
+    repeating-linear-gradient(90deg,
+      transparent 0 158px,
+      rgba(31, 42, 68, 0.05) 158px 159px,
+      rgba(255, 255, 255, 0.35) 159px 160px),
+    linear-gradient(to bottom, #EFE6D6 0%, var(--wall) 45%, var(--wall-shade) 100%);
+}
+
+/* Ceiling band with recessed downlights; each light washes the wall below it */
+.office-ceiling {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 34px;
+  background: #D6C7AB;
+  box-shadow: 0 1px 0 rgba(31, 42, 68, 0.12), 0 6px 18px rgba(31, 42, 68, 0.08);
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+}
+.office-ceiling i {
+  position: relative;
+  width: 46px; height: 6px;
+  margin-bottom: 6px;
+  border-radius: 50%;
+  background: #FFF9EE;
+  box-shadow: 0 0 10px 2px rgba(255, 246, 225, 0.9);
+}
+.office-ceiling i::after {
+  content: '';
+  position: absolute;
+  top: 8px; left: 50%;
+  width: 280px; height: 380px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse 50% 60% at 50% 0%,
+    rgba(255, 248, 232, 0.55), rgba(255, 248, 232, 0) 70%);
+  pointer-events: none;
+}
+
+/* Company plaque on the wall, upper left */
+.office-brand {
+  position: absolute;
+  top: 70px; left: 40px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--surface-card);
+}
+.brand-mark { width: 40px; height: 40px; color: #A88B45; }
+.brand-text { display: flex; flex-direction: column; gap: 2px; }
+.brand-name {
+  font-family: var(--serif);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--surface-card);
+}
+.brand-sub {
+  font: var(--caption-sm);
+  letter-spacing: 0.08em;
+  color: #7D6F58;
+}
+
+/* Floor-to-ceiling window, right side */
+.office-window {
+  position: absolute;
+  top: 100px;
+  right: 4vw;
+  bottom: calc(var(--floor) + 110px);
+  width: 15vw;
+  max-width: 260px;
+  box-shadow: 0 10px 30px rgba(31, 42, 68, 0.15);
+}
+.office-window svg { width: 100%; height: 100%; display: block; }
+
+/* Wainscot: lower wall panelling, capped by a gold chair rail */
+.office-wainscot {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: var(--floor);
+  height: 110px;
+  background:
+    repeating-linear-gradient(90deg,
+      transparent 0 14px,
+      rgba(31, 42, 68, 0.10) 14px 15px,
+      transparent 15px 146px,
+      rgba(255, 255, 255, 0.25) 146px 147px,
+      transparent 147px 160px),
+    linear-gradient(to bottom, #D5C4A3, var(--wainscot));
+  border-top: 3px solid #B8954A;
+  box-shadow: inset 0 3px 0 rgba(255, 255, 255, 0.25);
+}
+
+/* Navy carpet with a skirting board and a faint weave */
+.office-floor {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: var(--floor);
+  background:
+    repeating-linear-gradient(135deg,
+      rgba(232, 220, 200, 0.025) 0 2px, transparent 2px 6px),
+    linear-gradient(to bottom, #2A3656 0 8px, var(--carpet) 8px, #151D30 100%);
+  box-shadow: 0 -1px 0 rgba(31, 42, 68, 0.4);
+}
+
+/* Plant in front of the window */
+.office-plant {
+  position: absolute;
+  right: calc(4vw + 7.5vw - 85px);
+  bottom: calc(var(--floor) - 34px);
+  width: 170px; height: 283px;
+  filter: drop-shadow(0 8px 10px rgba(21, 29, 48, 0.35));
+}
+
 /* ── Simulation container ── */
 .sim {
   position: fixed; inset: 0;
   overflow: hidden;
+  z-index: 1;
 }
 .sim[aria-hidden="true"] { visibility: hidden; }
 .sim.active { visibility: visible; }
 
-/* ── Sky ── */
-.sky {
-  position: absolute; inset: 0;
-  background: linear-gradient(
-    175deg,
-    var(--sky-top) 0%,
-    var(--sky-mid) 45%,
-    var(--sky-bottom) 78%,
-    var(--ground) 100%
-  );
-  z-index: 0;
-}
-
-/* ── World scrolling container ── */
+/* ── World: slides move across the screen like a deck advancing ── */
 .world {
   position: absolute;
   top: 0; left: 0;
@@ -31,65 +149,6 @@
   z-index: 2;
 }
 
-/* ── Ground ── */
-.ground {
-  position: fixed;
-  bottom: 0; left: 0;
-  width: 100%;
-  height: 180px;
-  background: var(--ground);
-  z-index: 3;
-}
-.ground::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg,
-    transparent 0%,
-    var(--primary) 50%,
-    transparent 100%
-  );
-  opacity: 0.35;
-}
-.ground-glow {
-  position: absolute;
-  top: -60px; left: 0; right: 0;
-  height: 60px;
-  background: linear-gradient(to top, rgba(15, 27, 45, 0.8), transparent);
-}
-
-/* ── City skyline ── */
-.skyline {
-  position: fixed;
-  bottom: 180px; left: 0;
-  width: 300vw;
-  height: 280px;
-  z-index: 1;
-  display: flex;
-  align-items: flex-end;
-  gap: 16px;
-  padding: 0 40px;
-  opacity: 0.2;
-  transition: transform 1.8s var(--ease-out);
-  will-change: transform;
-}
-.bldg {
-  flex: none;
-  background: var(--surface-soft);
-  border-radius: 3px 3px 0 0;
-  position: relative;
-  border: 1px solid var(--hairline-soft);
-  border-bottom: none;
-}
-.bldg-window {
-  position: absolute;
-  width: 6px; height: 6px;
-  border-radius: 1px;
-  background: var(--window);
-  opacity: 0.6;
-}
-
 /* ── Zones ── */
 .zone {
   flex: none;
@@ -98,38 +157,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 var(--sp-lg);
+  /* Top band keeps the tallest card clear of the progress pill */
+  padding: 84px var(--sp-lg) 0;
   position: relative;
   z-index: 5;
 }
 
-/* Zone marker on ground */
+/* Presenter's mark on the carpet */
 .zone-marker {
   position: fixed;
-  bottom: 144px;
-  left: clamp(32px, calc(50% - 480px), 240px);
-  margin-left: 50px;
+  bottom: calc(var(--floor) - 44px);
+  left: max(24px, calc(50% - 488px));
+  margin-left: 22px;
   z-index: 4;
 }
 .marker-dot {
-  width: 14px; height: 14px;
-  background: var(--primary);
+  width: 70px; height: 12px;
   border-radius: 50%;
-  position: relative;
-  z-index: 2;
+  background: radial-gradient(ellipse, rgba(198, 167, 94, 0.45), rgba(198, 167, 94, 0) 70%);
 }
-.marker-pulse {
-  position: absolute;
-  inset: -8px;
-  border: 2px solid var(--primary);
-  border-radius: 50%;
-  opacity: 0;
-  z-index: 1;
-}
-.zone.active .marker-pulse {
-  animation: pulse-ring 2s ease-out infinite;
-}
-@keyframes pulse-ring {
-  0%   { opacity: 0.6; transform: scale(0.8); }
-  100% { opacity: 0;   transform: scale(2.2); }
-}
+.marker-pulse { display: none; }
