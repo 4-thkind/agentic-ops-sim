@@ -1,5 +1,8 @@
 /**
- * character.js — Controls the AI agent character's state and animation.
+ * character.js — The presenter's states.
+ *
+ * First slide: he walks on from the wings. After that he stays at the
+ * screen; between slides his arm drops, then comes back up to present.
  */
 
 const Character = (() => {
@@ -11,16 +14,23 @@ const Character = (() => {
 
   function walk() {
     if (!el) return;
-    el.classList.add('walking');
     el.classList.remove('arrived', 'speaking');
+    if (el.classList.contains('offstage')) {
+      el.classList.add('walking');
+      el.classList.remove('offstage');   // transition carries him on
+    } else {
+      el.classList.add('switching');
+    }
   }
 
   function arrive() {
     if (!el) return;
-    el.classList.remove('walking');
-    el.classList.add('arrived');
-    // Remove bounce class after animation
-    setTimeout(() => el.classList.remove('arrived'), 600);
+    const walked = el.classList.contains('walking');
+    el.classList.remove('walking', 'switching');
+    if (walked) {
+      el.classList.add('arrived');
+      setTimeout(() => el.classList.remove('arrived'), 600);
+    }
   }
 
   function setSpeaking(isSpeaking) {
