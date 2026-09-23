@@ -1,47 +1,47 @@
 /* ── Design Tokens ──
    Structure follows the Airbnb system (modest display weights, single accent
-   voltage, 4px base spacing, soft radii, one shadow tier) re-grounded on a
-   dark canvas so the night-city simulation still reads. */
+   voltage, 4px base spacing, soft radii, one shadow tier). Palette is navy,
+   warm beige and soft gold: navy carries the surfaces, beige the ink, and
+   gold is the one accent, used scarcely. */
 :root {
-  /* Surfaces — dark canvas, ink inverted from the Airbnb light system */
-  --canvas:        #0f0f10;
-  --surface-soft:  #161618;
-  --surface-card:  #1c1c1f;
-  --surface-strong:#232327;
+  /* Page ground is Warm Beige; surfaces on top are Navy #1F2A44 */
+  --canvas:         #E8DCC8;
+  --surface-soft:   #1B2540;
+  --surface-card:   #1F2A44;
+  --surface-strong: #283452;
 
-  /* Text */
-  --ink:        #f7f7f7;
-  --body:       #d6d6d6;
-  --muted:      #a0a0a4;
-  --muted-soft: #74747a;
+  /* Text — Warm Beige #E8DCC8 and its tints */
+  --ink:        #E8DCC8;
+  --body:       #D3C8B4;
+  --muted:      #A39A89;
+  --muted-soft: #7C766C;
 
-  /* Hairlines */
-  --hairline:        rgba(255, 255, 255, 0.11);
-  --hairline-soft:   rgba(255, 255, 255, 0.06);
-  --border-strong:   rgba(255, 255, 255, 0.22);
+  /* Hairlines — beige at low alpha, so dividers stay warm */
+  --hairline:      rgba(232, 220, 200, 0.12);
+  --hairline-soft: rgba(232, 220, 200, 0.07);
+  --border-strong: rgba(232, 220, 200, 0.26);
 
-  /* The single brand voltage — Rausch. Used scarcely. */
-  --primary:        #ff385c;
-  --primary-active: #e00b41;
-  --primary-soft:   rgba(255, 56, 92, 0.12);
-  --primary-line:   rgba(255, 56, 92, 0.28);
-  --on-primary:     #ffffff;
+  /* The single accent — Soft Gold #C6A75E. Used scarcely. */
+  --primary:        #C6A75E;
+  --primary-active: #B3934A;
+  --primary-soft:   rgba(198, 167, 94, 0.10);
+  --primary-line:   rgba(198, 167, 94, 0.30);
+  --on-primary:     #1F2A44;
 
-  /* Semantic — restricted to comparison blocks and timeline severity */
-  --positive:      #4ecb92;
-  --positive-soft: rgba(78, 203, 146, 0.1);
-  --negative:      #ff7a70;
-  --negative-soft: rgba(255, 122, 112, 0.1);
+  /* Semantic — desaturated so they sit inside the palette, not on top of it */
+  --positive:      #9DB89A;
+  --positive-soft: rgba(157, 184, 154, 0.08);
+  --positive-line: rgba(157, 184, 154, 0.22);
+  --negative:      #D4907A;
+  --negative-soft: rgba(212, 144, 122, 0.08);
+  --negative-line: rgba(212, 144, 122, 0.22);
 
   /* World */
-  --ground:     #131316;
-  --sky-top:    #0b0b0d;
-  --sky-mid:    #121215;
-  --sky-bottom: #1a1a1f;
-  --window:     #ffd9a8;
+  --window:     #E8DCC8;
 
   /* Typography — Inter is the documented Cereal substitute */
   --font: 'Inter', -apple-system, system-ui, Roboto, 'Helvetica Neue', sans-serif;
+  --serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
   --mono: 'JetBrains Mono', ui-monospace, monospace;
 
   /* Type scale (size / weight / line-height / tracking) */
@@ -79,9 +79,9 @@
   --r-full: 9999px;
 
   /* Elevation — one tier, as in the source system */
-  --shadow: rgba(0, 0, 0, 0.3) 0 0 0 1px,
-            rgba(0, 0, 0, 0.35) 0 2px 6px 0,
-            rgba(0, 0, 0, 0.45) 0 4px 8px 0;
+  --shadow: rgba(23, 32, 51, 0.10) 0 0 0 1px,
+            rgba(23, 32, 51, 0.18) 0 4px 12px 0,
+            rgba(23, 32, 51, 0.22) 0 14px 32px -6px;
 
   /* Motion */
   --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
