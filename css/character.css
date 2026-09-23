@@ -1,15 +1,16 @@
-/* ── The operator ──
-   An SVG executive: suit jacket, collar and tie, briefcase in hand.
-   Animation drives named groups inside the SVG rather than DOM nodes. */
-/* Parked to the left of the card rather than centred under it, where the
-   figure used to overlap the chapter content. */
+/* ── The presenter ──
+   An SVG executive who walks on from the left, then stands beside the
+   screen and presents: right arm gestures to the slide while he speaks. */
 .character {
   position: fixed;
-  bottom: 148px;
-  left: clamp(32px, calc(50% - 480px), 240px);
+  bottom: calc(var(--floor) - 52px);
+  left: max(24px, calc(50% - 488px));
   z-index: 10;
   width: 114px;
+  transition: transform 1.2s linear;
 }
+/* Waiting in the wings until the first slide */
+.character.offstage { transform: translateX(-60vw); }
 
 .char-svg {
   width: 114px;
@@ -17,12 +18,39 @@
   overflow: visible;
 }
 
-/* Walking — torso bob, legs swing, briefcase arm swings against them */
+/* Joint origins, in SVG user units */
+.leg-back, .leg-front { transform-origin: 44px 78px; }
+.arm-free   { transform-origin: 30px 50px; }
+.arm-point  { transform-origin: 58px 50px; }
+.char-figure { transform-origin: 44px 62px; }
+
+/* Presenting stance: right arm open toward the screen */
+.arm-point {
+  transform: rotate(-48deg);
+  transition: transform 0.5s var(--ease-out);
+}
+.char-eyes { transition: transform 0.4s; }
+.character:not(.walking) .char-eyes { transform: translateX(1px); }
+
+/* Between slides: arm drops while the deck advances */
+.character.switching .arm-point { transform: rotate(-12deg); }
+
+/* Speaking: the arm works the slide, pointing and easing back */
+.character.speaking .arm-point {
+  animation: present 2.8s ease-in-out infinite alternate;
+}
+@keyframes present {
+  0%   { transform: rotate(-62deg); }
+  45%  { transform: rotate(-98deg); }
+  100% { transform: rotate(-80deg); }
+}
+
+/* Walking on */
 .character.walking .char-figure { animation: bob 0.5s ease-in-out infinite; }
 .character.walking .leg-back    { animation: swing-back 0.5s ease-in-out infinite alternate; }
 .character.walking .leg-front   { animation: swing-front 0.5s ease-in-out infinite alternate; }
-.character.walking .arm-case    { animation: swing-case 0.5s ease-in-out infinite alternate; }
 .character.walking .arm-free    { animation: swing-free 0.5s ease-in-out infinite alternate; }
+.character.walking .arm-point   { animation: swing-point 0.5s ease-in-out infinite alternate; }
 
 @keyframes bob {
   0%, 100% { transform: translateY(0); }
@@ -30,49 +58,41 @@
 }
 @keyframes swing-back  { from { transform: rotate(-16deg); } to { transform: rotate(16deg); } }
 @keyframes swing-front { from { transform: rotate(16deg); }  to { transform: rotate(-16deg); } }
-@keyframes swing-case  { from { transform: rotate(9deg); }   to { transform: rotate(-9deg); } }
-@keyframes swing-free  { from { transform: rotate(-11deg); } to { transform: rotate(11deg); } }
+@keyframes swing-free  { from { transform: rotate(-9deg); }  to { transform: rotate(9deg); } }
+@keyframes swing-point { from { transform: rotate(11deg); }  to { transform: rotate(-11deg); } }
 
-/* Transform origins — joints, not bounding-box centres */
-.leg-back, .leg-front { transform-origin: 44px 78px; }
-.arm-case  { transform-origin: 58px 50px; }
-.arm-free  { transform-origin: 30px 50px; }
-.char-figure { transform-origin: 44px 62px; }
-
-/* Arrival — settles, then straightens the jacket */
-.character.arrived .char-figure {
-  animation: arrive 0.55s var(--ease-spring);
-}
+/* Settles on arrival */
+.character.arrived .char-figure { animation: arrive 0.5s var(--ease-spring); }
 @keyframes arrive {
   0%   { transform: translateY(0); }
-  45%  { transform: translateY(-7px); }
+  45%  { transform: translateY(-5px); }
   100% { transform: translateY(0); }
 }
 
-/* Blink — runs always, so the figure never reads as frozen */
-.char-eyes { animation: blink 5.2s infinite; transform-origin: center; }
+/* Blink — always running, so the figure never reads as frozen */
+.char-eyes circle { animation: blink 5.2s infinite; transform-origin: center; transform-box: fill-box; }
 @keyframes blink {
   0%, 94%, 100% { transform: scaleY(1); }
   96%           { transform: scaleY(0.1); }
 }
 
 /* Speaking — jaw moves, lapel pin lights */
+.char-mouth { transform-origin: 44px 30px; }
 .character.speaking .char-mouth { animation: talk 0.28s ease-in-out infinite alternate; }
 .character.speaking .char-pin   { animation: pin-glow 1.4s ease-in-out infinite; }
 @keyframes talk {
   from { transform: scaleY(0.55); }
   to   { transform: scaleY(1.5); }
 }
-.char-mouth { transform-origin: 44px 30px; }
 @keyframes pin-glow {
   0%, 100% { opacity: 0.55; }
   50%      { opacity: 1; }
 }
 
-/* Ground contact */
+/* Contact shadow on the carpet */
 .char-shadow {
   width: 66px; height: 10px;
-  margin: -8px auto 0;
-  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.55), transparent 70%);
+  margin: -12px auto 0;
+  background: radial-gradient(ellipse, rgba(8, 12, 22, 0.6), transparent 70%);
   border-radius: 50%;
 }
