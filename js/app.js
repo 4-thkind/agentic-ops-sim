@@ -13,6 +13,7 @@
   // 1. Init the simulation behind the intro
   Character.init();
   Navigation.init();
+  Workshop.init();
 
   // 2. Scale each slide so it fits without scrolling. Mobile scrolls instead,
   //    since shrinking text on a phone makes it unreadable.
@@ -20,7 +21,8 @@
   function fitCards() {
     const mobile = window.innerWidth <= 744;
     const room = window.innerHeight - TOP_BAND - BOTTOM - AIR;
-    document.querySelectorAll('.card').forEach(card => {
+    // The chat screen sizes itself in CSS and scrolls inside.
+    document.querySelectorAll('.card:not(.card-chat)').forEach(card => {
       if (mobile) { card.style.removeProperty('--fit'); return; }
       const fit = Math.min(1, room / card.offsetHeight);
       card.style.setProperty('--fit', fit.toFixed(3));
