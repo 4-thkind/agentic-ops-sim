@@ -78,7 +78,7 @@ const Navigation = (() => {
     transitioning = true;
 
     VoiceEngine.stop();
-    Character.walk();
+    Character.walk(ZONES[idx].speakerId);
 
     currentZone = idx;
 
