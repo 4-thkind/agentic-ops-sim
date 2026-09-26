@@ -14,17 +14,18 @@ from tts import _hz, _pct
 def test_zones_parse():
     speakers, zones = load_zones()
 
-    assert len(zones) == 8, f"expected 8 zones, parsed {len(zones)}"
-    assert len(speakers) == 8, f"expected 8 speakers, parsed {len(speakers)}"
+    intro = [z for z in zones if z[0] != "agent"]
+    lines = [z for z in zones if z[0] == "agent"]
 
-    ids = [z[0] for z in zones]
-    assert ids == ["crisis", "diagnosis", "supply", "people",
-                   "technology", "decision", "escalation", "future"], ids
+    assert [z[0] for z in intro] == ["stakes", "shift", "how", "workshop"], intro
+    assert len(speakers) == 2, f"expected 2 speakers, parsed {len(speakers)}"
+    # 7 scenarios x 10 spoken lines, plus the shared lines.
+    assert len(lines) >= 70, f"expected 70+ workshop lines, parsed {len(lines)}"
 
     for zid, spk, text in zones:
         assert spk in speakers, f"{zid} references unknown speaker {spk}"
-        assert len(text) > 200, f"{zid} narration looks truncated ({len(text)} chars)"
-        assert "`" not in text, f"{zid} narration captured a stray backtick"
+        assert len(text) > 30, f"{zid} line looks truncated: {text!r}"
+        assert "${" not in text, f"spoken line must be static: {text[:40]}"
 
     for key, s in speakers.items():
         assert s["voice"].endswith("Neural"), f"{key} has a non-neural voice"
