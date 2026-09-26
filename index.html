@@ -222,7 +222,7 @@
     </div><!-- /world -->
 
     <!-- The operator — SVG executive figure -->
-    <div class="character offstage" id="character">
+    <div class="character offstage" id="character" data-speaker="narrator">
       <svg class="char-svg" viewBox="0 0 88 124" fill="none" aria-hidden="true">
         <g class="char-figure">
 
@@ -289,6 +289,86 @@
             <rect x="54" y="48" width="8" height="26" rx="4" fill="#30353F"/>
             <rect x="54" y="68" width="8" height="4" fill="#F3EDE2"/>
             <circle cx="58" cy="76" r="4" fill="#e3b48f"/>
+          </g>
+
+        </g>
+      </svg>
+      <div class="char-shadow"></div>
+    </div>
+
+    <!-- Iris, the AI advisor — same rig as the narrator so it shares every animation -->
+    <div class="character offstage" id="characterIris" data-speaker="agent">
+      <svg class="char-svg" viewBox="0 0 88 124" fill="none" aria-hidden="true">
+        <g class="char-figure">
+
+          <!-- Long hair, behind the shoulders -->
+          <path d="M34 19c0-8 4.5-12.5 10-12.5S54 11 54 19v19c0 3-2 5-4.5 5H38.5C36 43 34 41 34 38z" fill="#2a1d1a"/>
+
+          <!-- Back leg -->
+          <g class="leg-back">
+            <rect x="38.5" y="84" width="7" height="24" rx="3.5" fill="#3b2e30"/>
+            <path d="M36.5 106h10v4a2 2 0 0 1-2 2h-6.5a1.5 1.5 0 0 1-1.5-1.5z" fill="#141418"/>
+          </g>
+
+          <!-- Left sleeve (behind the torso) -->
+          <g class="arm-free">
+            <rect x="26" y="48" width="8" height="26" rx="4" fill="#57293A"/>
+          </g>
+
+          <!-- Neck -->
+          <rect x="41" y="30" width="6" height="9" rx="2.5" fill="#c68a66"/>
+
+          <!-- Blazer, nipped at the waist -->
+          <path d="M30 47c0-6 4-10 9-11h10c5 1 9 5 9 11v25l-2 5H32l-2-5z" fill="#6B3440"/>
+          <!-- Blouse -->
+          <path d="M39 36h10l-5 13z" fill="#F3EDE2"/>
+          <!-- Lapels -->
+          <path d="M39 36l-8 10v9l8-11z" fill="#57293A"/>
+          <path d="M49 36l8 10v9l-8-11z" fill="#57293A"/>
+          <!-- Pendant -->
+          <path d="M40.5 38.5L44 44l3.5-5.5" stroke="#C6A75E" stroke-width="0.8"/>
+          <circle class="char-pin" cx="44" cy="44.5" r="1.8" fill="var(--primary)" opacity="0.55"/>
+
+          <!-- Skirt -->
+          <path d="M32 76h24l2.5 13h-29z" fill="#2C313B"/>
+
+          <!-- Front leg -->
+          <g class="leg-front">
+            <rect x="42" y="86" width="7" height="22" rx="3.5" fill="#46373a"/>
+            <path d="M40 106h10v4a2 2 0 0 1-2 2h-6.5a1.5 1.5 0 0 1-1.5-1.5z" fill="#1c1c22"/>
+          </g>
+
+          <!-- Head -->
+          <path d="M36 16c0-5 3.5-8 8-8s8 3 8 8v8c0 5-3.5 9-8 9s-8-4-8-9z" fill="#dca581"/>
+          <!-- Fringe, swept to one side -->
+          <path d="M35 20c-1-9 4-13.5 9-13.5s10 4 9.5 12.5c-2-4-5-6-9-6-3.5 0-6 1.5-7 4-1 1.5-1.8 2.5-2.5 3z" fill="#2a1d1a"/>
+          <!-- Earrings -->
+          <circle cx="36" cy="27" r="1.1" fill="#C6A75E"/>
+          <circle cx="52" cy="27" r="1.1" fill="#C6A75E"/>
+          <!-- Brows -->
+          <rect x="39" y="20.5" width="4" height="1.1" rx="0.55" fill="#2a1d1a"/>
+          <rect x="45" y="20.5" width="4" height="1.1" rx="0.55" fill="#2a1d1a"/>
+          <!-- Eyes -->
+          <g class="char-eyes">
+            <circle cx="41" cy="24" r="1.4" fill="#1f1b1a"/>
+            <circle cx="47" cy="24" r="1.4" fill="#1f1b1a"/>
+          </g>
+          <!-- Mouth -->
+          <rect class="char-mouth" x="41.5" y="29" width="5" height="1.8" rx="0.9" fill="#a3574f"/>
+
+          <!-- Left hand + tablet -->
+          <g class="arm-free">
+            <circle cx="30" cy="76" r="3.6" fill="#dca581"/>
+            <rect x="21" y="72" width="12" height="16" rx="1.6" fill="#1F2A44" stroke="#C6A75E" stroke-width="0.8"/>
+            <rect x="23" y="74.5" width="8" height="1" rx="0.5" fill="#C6A75E" opacity="0.7"/>
+            <rect x="23" y="77" width="6" height="1" rx="0.5" fill="#E8DCC8" opacity="0.4"/>
+          </g>
+
+          <!-- Right arm: presents to the screen -->
+          <g class="arm-point">
+            <rect x="54" y="48" width="8" height="26" rx="4" fill="#57293A"/>
+            <rect x="54" y="68" width="8" height="4" fill="#F3EDE2"/>
+            <circle cx="58" cy="76" r="3.6" fill="#dca581"/>
           </g>
 
         </g>
