@@ -19,7 +19,7 @@ const VoiceEngine = (() => {
 
   let audio = null;              // active HTMLAudioElement
   let token = 0;                 // guards against races when zones change fast
-  const clipCache = {};          // zone id -> object URL
+  const clipCache = {};          // speaker|text -> object URL
   let serviceUp = null;          // null = untested, then boolean
 
   /* ── Neural service ── */
@@ -35,17 +35,25 @@ const VoiceEngine = (() => {
     return serviceUp;
   }
 
-  async function fetchClip(zoneIdx) {
+  /* A line is { id, text, speakerId }. The id must match what prewarm.py
+     sends — zone id for narration, 'agent' for workshop lines — so the
+     service finds the pre-rendered clip. */
+  function zoneLine(zoneIdx) {
     const zone = ZONES[zoneIdx];
-    if (clipCache[zone.id]) return clipCache[zone.id];
+    return { id: zone.id, text: zone.narration, speakerId: zone.speakerId };
+  }
 
-    const speaker = SPEAKERS[zone.speakerId];
+  async function fetchClip(line) {
+    const key = line.speakerId + '|' + line.text;
+    if (clipCache[key]) return clipCache[key];
+
+    const speaker = SPEAKERS[line.speakerId];
     const res = await fetch(API + '/speak', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        id: zone.id,
-        text: zone.narration,
+        id: line.id,
+        text: line.text,
         voice: speaker.voice,
         rate: speaker.rate,
         pitch: speaker.pitch
@@ -54,15 +62,15 @@ const VoiceEngine = (() => {
     if (!res.ok) throw new Error('tts ' + res.status);
 
     const url = URL.createObjectURL(await res.blob());
-    clipCache[zone.id] = url;
+    clipCache[key] = url;
     return url;
   }
 
   /** Warm the cache for the next zone so transitions are gapless. */
   function prefetch(zoneIdx) {
     if (!enabled || zoneIdx < 0 || zoneIdx >= ZONES.length) return;
-    if (clipCache[ZONES[zoneIdx].id]) return;
-    probe().then(up => { if (up) fetchClip(zoneIdx).catch(() => {}); });
+    const line = zoneLine(zoneIdx);
+    probe().then(up => { if (up) fetchClip(line).catch(() => {}); });
   }
 
   /* ── Browser fallback ── */
@@ -109,16 +117,15 @@ const VoiceEngine = (() => {
     return voice;
   }
 
-  function speakFallback(zoneIdx, done, started) {
+  function speakFallback(line, done, started) {
     if (!synth) { done(); return; }
 
-    const zone = ZONES[zoneIdx];
-    const speaker = SPEAKERS[zone.speakerId];
-    const utter = new SpeechSynthesisUtterance(zone.narration);
+    const speaker = SPEAKERS[line.speakerId];
+    const utter = new SpeechSynthesisUtterance(line.text);
     utter.rate  = speaker.rate || 1;
     utter.pitch = speaker.pitch || 1;
 
-    const voice = pickVoice(zone.speakerId);
+    const voice = pickVoice(line.speakerId);
     if (voice) { utter.voice = voice; utter.lang = voice.lang; }
 
     utter.onstart = started;
@@ -127,13 +134,17 @@ const VoiceEngine = (() => {
     synth.speak(utter);
 
     // speechSynthesis drops onend on some builds; bound it by word count.
-    const words = zone.narration.split(/\s+/).length;
+    const words = line.text.split(/\s+/).length;
     setTimeout(done, Math.max(10000, words * 520));
   }
 
   /* ── Public ── */
 
-  async function speak(zoneIdx, { onStart, onEnd } = {}) {
+  function speak(zoneIdx, callbacks) {
+    return speakLine(zoneLine(zoneIdx), callbacks);
+  }
+
+  async function speakLine(line, { onStart, onEnd } = {}) {
     if (!enabled) { onEnd && onEnd(); return; }
 
     stop();
@@ -156,21 +167,20 @@ const VoiceEngine = (() => {
 
     if (await probe()) {
       try {
-        const url = await fetchClip(zoneIdx);
-        if (mine !== token) return;          // zone changed while fetching
+        const url = await fetchClip(line);
+        if (mine !== token) return;          // superseded while fetching
 
         audio = new Audio(url);
         audio.onplaying = started;
         audio.onended   = done;
-        audio.onerror   = () => speakFallback(zoneIdx, done, started);
+        audio.onerror   = () => speakFallback(line, done, started);
         await audio.play();
-        prefetch(zoneIdx + 1);
         return;
       } catch {
         // fall through to the browser voice
       }
     }
-    if (mine === token) speakFallback(zoneIdx, done, started);
+    if (mine === token) speakFallback(line, done, started);
   }
 
   function stop() {
@@ -196,6 +206,6 @@ const VoiceEngine = (() => {
     onEndCb = endCb;
   }
 
-  return { speak, stop, toggle, prefetch, isPlaying, isEnabled,
+  return { speak, speakLine, stop, toggle, prefetch, isPlaying, isEnabled,
            isAvailable, usingNeural, onStateChange };
 })();
