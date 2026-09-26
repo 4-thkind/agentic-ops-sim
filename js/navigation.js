@@ -30,6 +30,7 @@ const Navigation = (() => {
     voiceLabel   = document.getElementById('voiceLabel');
     voiceEngine  = document.getElementById('voiceEngine');
     counterCurrent = document.getElementById('counterCurrent');
+    document.getElementById('counterTotal').textContent = totalZones;
 
     // Create progress dots
     for (let i = 0; i < totalZones; i++) {
@@ -52,7 +53,7 @@ const Navigation = (() => {
     let touchX = 0;
     document.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
     document.addEventListener('touchend', e => {
-      if (currentZone < 0) return;
+      if (currentZone < 0 || e.target.closest('.card-chat')) return;
       const dx = e.changedTouches[0].clientX - touchX;
       if (Math.abs(dx) > 70) {
         dx < 0 ? goTo(currentZone + 1) : goTo(currentZone - 1);
@@ -122,6 +123,7 @@ const Navigation = (() => {
         VoiceEngine.prefetch(idx + 1);
         setTimeout(markEngine, 600);
       }
+      if (ZONES[idx].id === 'workshop') Workshop.start();
     }, 1200);
   }
 
@@ -160,7 +162,8 @@ const Navigation = (() => {
   }
 
   function handleKey(e) {
-    if (currentZone < 0) return;
+    // Typing in the workshop, or pressing a chip, must not change slides.
+    if (currentZone < 0 || e.target.closest('input, textarea, button')) return;
     if (e.key === 'ArrowRight' || e.key === ' ') {
       e.preventDefault();
       goTo(currentZone + 1);
