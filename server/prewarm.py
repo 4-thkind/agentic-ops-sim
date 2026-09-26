@@ -1,5 +1,5 @@
 """
-Pre-render every zone's narration into the cache.
+Pre-render every intro narration and workshop line into the cache.
 
 Run this once before a presentation. The simulation then plays each clip
 from disk with no synthesis delay, and survives a flaky network on the day.
@@ -39,32 +39,37 @@ def load_zones():
         }
 
     zones = []
-    block = src[src.index("const ZONES"):]
+    block = src[src.index("const ZONES"):src.index("const LINES")]
     for zid, spk, text in re.findall(
         r"id:\s*'([^']+)',\s*speakerId:\s*'([^']+)',\s*narration:\s*`([^`]*)`", block
     ):
         zones.append((zid, spk, text.strip()))
 
+    # Every backtick string after LINES is a workshop line spoken by the
+    # advisor. The page requests them with id 'agent', so render them the same.
+    tail = src[src.index("const LINES"):]
+    seen = set()
+    for text in re.findall(r"`([^`]*)`", tail):
+        text = text.strip()
+        if text and text not in seen:
+            seen.add(text)
+            zones.append(("agent", "agent", text))
+
     return speakers, zones
 
 
-async def main():
-    speakers, zones = load_zones()
-    if not zones:
-        raise SystemExit("No zones parsed from data.js — check the file format.")
+async def render(sem, speakers, zid, spk, text):
+    s = speakers.get(spk, {"voice": DEFAULT_VOICE, "rate": 1.0, "pitch": 1.0})
+    req = SpeakRequest(id=zid, text=text, voice=s["voice"],
+                       rate=s["rate"], pitch=s["pitch"])
+    path = _cache_path(req)
+    label = f"{zid:<9} {text[:48]}"
 
-    print(f"Rendering {len(zones)} narrations\n")
+    if path.exists():
+        print(f"  cached   {label}")
+        return
 
-    for zid, spk, text in zones:
-        s = speakers.get(spk, {"voice": DEFAULT_VOICE, "rate": 1.0, "pitch": 1.0})
-        req = SpeakRequest(id=zid, text=text, voice=s["voice"],
-                           rate=s["rate"], pitch=s["pitch"])
-        path = _cache_path(req)
-
-        if path.exists():
-            print(f"  cached   {zid:<12} {s['voice']}")
-            continue
-
+    async with sem:
         communicate = edge_tts.Communicate(
             text=text, voice=s["voice"],
             rate=_pct(s["rate"], 50), pitch=_hz(s["pitch"]),
@@ -72,7 +77,17 @@ async def main():
         tmp = path.with_suffix(".part")
         await communicate.save(str(tmp))
         tmp.replace(path)
-        print(f"  rendered {zid:<12} {s['voice']:<28} {path.stat().st_size // 1024} KB")
+    print(f"  rendered {label}")
+
+
+async def main():
+    speakers, zones = load_zones()
+    if not zones:
+        raise SystemExit("No zones parsed from data.js — check the file format.")
+
+    print(f"Rendering {len(zones)} clips\n")
+    sem = asyncio.Semaphore(6)  # a few at once; Edge-TTS throttles bursts
+    await asyncio.gather(*(render(sem, speakers, *z) for z in zones))
 
     print("\nDone. Start the service with: python tts.py")
 
