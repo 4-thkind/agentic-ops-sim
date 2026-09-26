@@ -96,3 +96,8 @@
   background: radial-gradient(ellipse, rgba(8, 12, 22, 0.6), transparent 70%);
   border-radius: 50%;
 }
+
+/* Leaving: turn to face the wings and walk off, a little quicker than the
+   entrance so the next presenter is not kept waiting. */
+.character.exiting { transition-duration: 0.9s; transition-timing-function: ease-in; }
+.character.exiting .char-svg { transform: scaleX(-1); }
