@@ -1,8 +1,20 @@
 # Crisis to Command
 
-An interactive simulation of a $4.5B industrial company coming apart — and the
-AI agent that could have caught each failure before it compounded. Eight
-chapters, each narrated by a different member of the executive team.
+An interactive AI operations workshop. The viewer takes the CEO's chair at
+Nova Brands, a $4.5B consumer goods company under pressure in every function,
+and works through problems one to one with an AI operations advisor.
+
+Three short narrated slides set the scene. Then the workshop: the CEO types a
+problem and the result they need, in their own words. The advisor confirms it,
+diagnoses where the process actually leaks, lays out three ways forward with
+time, cost, risk and projected impact, and says which it would pick. The CEO
+decides, or proposes their own approach. The advisor reacts, pushes back where
+it disagrees, asks one follow-up question, and shows the outcome. A wrap-up
+summarises every decision as an operating model.
+
+The session is fully scripted and runs offline. No LLM, no API keys. Seven
+prepared problem areas: finance close, accounts payable, retailer deductions,
+supply chain, compliance alerts, customer care, and talent and knowledge loss.
 
 ## Running it
 
@@ -10,11 +22,11 @@ chapters, each narrated by a different member of the executive team.
 python run.py
 ```
 
-That installs anything missing, renders any narration not already cached,
+That installs anything missing, renders any voice clips not already cached,
 starts the narration service and the site, and opens the browser. Ctrl+C stops
 everything.
 
-The first run renders the eight narration clips and takes about 30 seconds.
+The first run renders about 80 voice clips and takes a minute or two.
 Every run after that starts immediately - the clips are cached to
 `server/cache/`, which is not tracked in git.
 
@@ -32,7 +44,7 @@ Requires Python 3.10+ and a recent Chrome, Edge, Firefox or Safari.
 ```bash
 cd server
 pip install -r requirements.txt
-python prewarm.py      # renders all 8 narrations once, ~30s
+python prewarm.py      # renders every clip once
 python tts.py          # serves them on :8000
 
 # then, from the project root
@@ -47,28 +59,23 @@ service is reachable, **System** when it is not.
 
 ## Narration
 
-Eight speakers, eight distinct neural voices, rendered by Edge-TTS (Microsoft
-neural voices — free, no API key):
+Two neural voices, rendered by Edge-TTS (Microsoft neural voices, free, no API
+key): the Narrator (en-GB-Thomas) opens, and Iris, the AI advisor
+(en-US-Michelle), speaks everything else, including every workshop reply.
 
-| Speaker | Role | Voice |
-|---|---|---|
-| Elena Rao | CEO | en-US-Jenny |
-| Daniel Brooks | CFO | en-US-Guy |
-| Marcus Lee | Head of Operations | en-US-Christopher |
-| Priya Menon | Chief HR Officer | en-IN-Neerja |
-| Sofia Martinez | Chief Commercial Officer | en-US-Aria |
-| Richard Bennett | Board Director | en-GB-Ryan |
-| AI Operations Agent | — | en-US-Michelle |
-| Narrator | — | en-GB-Thomas |
+Clips are cached to `server/cache/` and keyed by voice, rate, pitch and text,
+so editing a line in `js/data.js` re-renders only that clip.
 
-Clips are cached to `server/cache/` on first render and keyed by voice, rate,
-pitch and script — editing a narration in `js/data.js` re-renders only that clip.
+Run `python prewarm.py` before presenting. It renders all ~80 clips so no reply
+waits on synthesis. Without the service (for example on a static host) the page
+falls back to browser voices.
 
-Run `python prewarm.py` before presenting. It fills the cache so no chapter
-waits on synthesis, and the demo survives a bad network.
+Checks:
 
-`python test_prewarm.py` checks that the `data.js` parser still matches the file
-and that the rate/pitch mapping clamps correctly.
+```bash
+python server/test_prewarm.py   # data.js parser + rate/pitch mapping
+node js/test_matcher.js         # typed problems route to the right scenario
+```
 
 ## Design
 
@@ -104,7 +111,9 @@ css/cards.css       chapter cards and their content blocks
 css/hud.css         progress, speaker bar, controls
 css/character.css   the presenter
 css/world.css       the boardroom
-js/data.js          speakers and narration scripts (source of truth)
+js/data.js          speakers, intro narration, workshop scenarios (source of truth)
+js/workshop.js      the CEO/advisor conversation and problem matcher
+css/chat.css        workshop chat screen
 js/voices.js        neural playback with browser fallback
 js/navigation.js    zone transitions, progress, input
 server/tts.py       narration service
