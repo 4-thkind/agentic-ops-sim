@@ -2,8 +2,10 @@
    The fourth screen is a conversation, not a slide: fixed height, the log
    scrolls inside, input pinned to the bottom bezel. */
 .card-chat {
-  max-width: 760px;
-  height: max(380px, calc(100vh - 84px - 170px - 24px));
+  max-width: 820px;
+  /* Taller than the slides: only clear the speaker pill at the bottom. */
+  margin-bottom: 88px;
+  height: max(440px, calc(100vh - 84px - 88px - 12px));
   display: flex;
   flex-direction: column;
   padding: var(--sp-lg);
